@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Somnus Studio - Informe de Rendimiento Facebook Ads</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN para gráficos interactivos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#e0e7ff',
+              600: '#6366f1',
+              700: '#4f46e5',
+              800: '#3730a3',
+              900: '#312e81',
+              darkBg: '#0b0f19',
+              darkCard: '#161b26',
+              accentTeal: '#06b6d4',
+              accentPurple: '#a855f7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #06b6d4 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #111827;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #374151;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-brand-darkBg text-gray-100 min-h-screen antialiased custom-scrollbar">
+
+  <!-- Header / Barra de Navegación -->
+  <header class="border-b border-gray-800 sticky top-0 bg-brand-darkBg/90 backdrop-blur-md z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <!-- Logo de Somnus Studio Simulado en SVG -->
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-accentTeal to-brand-accentPurple flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5M12 19.5V21M12 7.5A4.5 4.5 0 1 1 7.5 12h9A4.5 4.5 0 0 1 12 7.5Z" />
+          </svg>
+        </div>
+        <div>
+          <span class="font-extrabold text-xl tracking-tight text-white">SOMNUS <span class="text-brand-accentTeal font-normal">STUDIO</span></span>
+          <span class="block text-[10px] text-gray-400 tracking-widest uppercase font-bold">Performance Analytics</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button onclick="window.print()" class="hidden sm:inline-flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 text-xs text-white font-bold py-2 px-4 rounded-xl border border-gray-700 transition duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 1.252a1.125 1.125 0 0 1-1.013 1.324H7.104a1.125 1.125 0 0 1-1.013-1.324L6.34 18m11.318-4.171a1.5 1.5 0 1 1-3.003-.095 1.5 1.5 0 0 1 3.003.095Zm-11.318 0a1.5 1.5 0 1 1-3.002-.095 1.5 1.5 0 0 1 3.002.095ZM12 11.25c.348 0 .696-.046 1.033-.138M12 11.25a1.875 1.875 0 0 0-1.875 1.875M12 11.25c-.348 0-.696-.046-1.033-.138M12 11.25a1.875 1.875 0 0 1 1.875 1.875m-3.75-1.738A12.57 12.57 0 0 1 12 9.75c1.033 0 2.031.124 2.985.362m-5.97 0a1.5 1.5 0 0 1-1.015-1.314 11.962 11.962 0 0 1 0-4.6c.113-.645.62-1.136 1.272-1.136h5.456c.65 0 1.159.491 1.272 1.136a11.963 11.963 0 0 1 0 4.6 1.5 1.5 0 0 1-1.015 1.314M12 9.75v1.5" />
+          </svg>
+          <span>Guardar PDF</span>
+        </button>
+        <span class="inline-flex items-center px-3 h-8 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
+          <span class="w-2 h-2 rounded-full bg-indigo-400 mr-2 animate-pulse"></span> Datos en Tiempo Real
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+
+    <!-- Introducción y Hero Section -->
+    <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-darkCard to-brand-900/40 border border-gray-800 p-8 sm:p-10 shadow-2xl">
+      <div class="absolute top-0 right-0 w-80 h-80 bg-brand-accentPurple/10 rounded-full filter blur-[100px]"></div>
+      <div class="absolute bottom-0 left-0 w-80 h-80 bg-brand-accentTeal/10 rounded-full filter blur-[100px]"></div>
+      
+      <div class="relative z-10 max-w-3xl">
+        <span class="text-xs font-bold uppercase tracking-widest text-brand-accentTeal bg-brand-accentTeal/10 px-3 py-1 rounded-full">Reporte Ejecutivo de Campañas</span>
+        <h1 class="text-3xl sm:text-5xl font-black text-white mt-4 mb-3 tracking-tight">
+          Tu Estrategia de <span class="gradient-text">Conversión a WhatsApp</span>
+        </h1>
+        <p class="text-gray-300 text-base sm:text-lg leading-relaxed">
+          Hola, equipo de <strong class="text-white">Somnus Studio</strong>. Hemos estructurado este informe de Facebook Ads para detallar con absoluta claridad cómo se ha comportado tu presupuesto publicitario. Aquí comprenderás exactamente a dónde fue cada peso invertido y cuál fue la eficiencia con la que capturamos clientes interesados directos.
+        </p>
+      </div>
+    </section>
+
+    <!-- KPIs Resumen Global (Tarjetas Grandes) -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- KPI 1: Inversión Total -->
+      <div class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl relative group hover:border-brand-accentTeal/40 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-indigo-500/10 rounded-xl text-indigo-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </div>
+          <span class="text-xs font-semibold text-gray-400">Presupuesto</span>
+        </div>
+        <h3 class="text-3xl font-bold text-white">$349,805 <span class="text-xs text-gray-400 font-normal">COP</span></h3>
+        <p class="text-sm font-semibold text-indigo-300 mt-1">Inversión Total Ejecutada</p>
+        <p class="text-xs text-gray-400 mt-2 border-t border-gray-800/60 pt-2">Presupuesto consumido entre las 3 campañas activas.</p>
+      </div>
+
+      <!-- KPI 2: Conversaciones Generadas -->
+      <div class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl relative group hover:border-brand-accentTeal/40 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-brand-accentTeal/10 rounded-xl text-brand-accentTeal">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-1.923 2.502m4.974-1.217.157-.157a4.836 4.836 0 0 1 1.543-.918c1.373-.417 2.822-.172 3.924.581Z" />
+            </svg>
+          </div>
+          <span class="text-xs font-semibold text-gray-400">Resultados</span>
+        </div>
+        <h3 class="text-3xl font-bold text-white">400</h3>
+        <p class="text-sm font-semibold text-brand-accentTeal mt-1">Conversaciones Iniciadas</p>
+        <p class="text-xs text-gray-400 mt-2 border-t border-gray-800/60 pt-2">Clientes potenciales reales que escribieron a tu WhatsApp.</p>
+      </div>
+
+      <!-- KPI 3: Costo Promedio por Conversación -->
+      <div class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl relative group hover:border-brand-accentTeal/40 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-emerald-500/10 rounded-xl text-emerald-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+            </svg>
+          </div>
+          <span class="text-xs font-semibold text-gray-400">Eficiencia</span>
+        </div>
+        <h3 class="text-3xl font-bold text-white">$874.51 <span class="text-xs text-gray-400 font-normal">COP</span></h3>
+        <p class="text-sm font-semibold text-emerald-400 mt-1">Costo Promedio por Chat</p>
+        <p class="text-xs text-gray-400 mt-2 border-t border-gray-800/60 pt-2">El costo promedio invertido para adquirir un prospecto.</p>
+      </div>
+
+      <!-- KPI 4: Alcance de Audiencia -->
+      <div class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl relative group hover:border-brand-accentTeal/40 transition-all duration-300">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-brand-accentPurple/10 rounded-xl text-brand-accentPurple">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+            </svg>
+          </div>
+          <span class="text-xs font-semibold text-gray-400">Impacto</span>
+        </div>
+        <h3 class="text-3xl font-bold text-white">32,434</h3>
+        <p class="text-sm font-semibold text-brand-accentPurple mt-1">Personas Únicas</p>
+        <p class="text-xs text-gray-400 mt-2 border-t border-gray-800/60 pt-2">Número total de usuarios únicos que vieron tus anuncios.</p>
+      </div>
+
+    </section>
+
+    <!-- Análisis de Métricas: Gráficas Interactivas -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Panel de Gráficos (Izquierda - 2 Columnas de ancho) -->
+      <div class="lg:col-span-2 bg-brand-darkCard border border-gray-800 p-6 rounded-2xl flex flex-col justify-between">
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-xl font-bold text-white">Rendimiento Comparativo</h2>
+              <p class="text-xs text-gray-400">Analiza el comportamiento y la inversión de cada campaña</p>
+            </div>
+            <!-- Botones selectores de gráfico -->
+            <div class="flex bg-gray-900 p-1 rounded-xl border border-gray-800 text-xs self-start">
+              <button onclick="switchChart('results')" id="btn-results" class="px-3 py-1.5 rounded-lg font-semibold text-white bg-brand-600 transition-all duration-200">Resultados vs Gasto</button>
+              <button onclick="switchChart('cost')" id="btn-cost" class="px-3 py-1.5 rounded-lg font-semibold text-gray-400 hover:text-white transition-all duration-200 ml-1">Costo por Chat</button>
+            </div>
+          </div>
+          
+          <!-- Contenedor del Canvas para Chart.js -->
+          <div class="relative w-full h-80">
+            <canvas id="performanceChart"></canvas>
+          </div>
+        </div>
+        
+        <div class="mt-6 pt-4 border-t border-gray-800/80 grid grid-cols-3 gap-4 text-center">
+          <div>
+            <span class="block text-xs text-gray-400">Campañas Totales</span>
+            <span class="text-lg font-bold text-white">3</span>
+          </div>
+          <div>
+            <span class="block text-xs text-gray-400">Frecuencia Promedio</span>
+            <span class="text-lg font-bold text-brand-accentTeal" title="Impresiones totales divididas por el Alcance total">1.61x</span>
+          </div>
+          <div>
+            <span class="block text-xs text-gray-400">Tasa de Conversión Prom.</span>
+            <span class="text-lg font-bold text-brand-accentPurple" title="Porcentaje de personas alcanzadas que abrieron chat">1.23%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- El Ganador del Periodo (Derecha - 1 Columna de ancho) -->
+      <div class="bg-gradient-to-br from-brand-900/50 to-brand-darkCard border-2 border-brand-accentTeal/30 p-6 rounded-2xl relative flex flex-col justify-between overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-40 h-40 bg-brand-accentTeal/20 rounded-full blur-2xl"></div>
+        
+        <div>
+          <div class="flex items-center space-x-2 text-brand-accentTeal mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 animate-bounce">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.005a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75M10.5 10.5h.008v.008H10.5V10.5Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+            <span class="text-xs font-bold uppercase tracking-wider">Campaña Estrella</span>
+          </div>
+          <h3 class="text-2xl font-black text-white leading-tight mb-2">Campaña #3</h3>
+          <p class="text-xs text-gray-300 leading-relaxed">
+            Ha sido el motor de optimización del periodo. Con una inversión similar a la de "Campaña Carrusel #2", generó <strong class="text-white">135 conversaciones</strong> a un increíble costo de <strong class="text-brand-accentTeal">$740.19 COP</strong> por chat.
+          </p>
+
+          <div class="mt-6 space-y-3 bg-gray-900/50 p-4 rounded-xl border border-gray-800">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-gray-400">Inversión:</span>
+              <span class="font-bold text-white">$99,926 COP</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-gray-400">Chats generados:</span>
+              <span class="font-bold text-white">135 chats</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-gray-400">Costo por Chat:</span>
+              <span class="font-semibold text-emerald-400">$740.19 COP</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-gray-400">Eficiencia de alcance:</span>
+              <span class="font-semibold text-brand-accentTeal">1.81% de conversión</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-gray-800 text-xs text-gray-400 leading-normal">
+          💡 <strong>Recomendación Somnus:</strong> Esta campaña demostró que el formato clásico o un anuncio específico de imagen/video tuvo un CTR y relevancia muy superior al formato Carrusel, logrando captar más clientes con menos presupuesto.
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Tabla Detallada y de Desglose -->
+    <section class="bg-brand-darkCard border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
+      <div class="p-6 border-b border-gray-800 flex justify-between items-center flex-wrap gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-white">Hoja de Datos Técnicos</h2>
+          <p class="text-xs text-gray-400">Métricas consolidadas directamente desde la suite publicitaria</p>
+        </div>
+        <div class="text-xs text-gray-400">
+          Moneda: <strong class="text-white">COP (Peso Colombiano)</strong>
+        </div>
+      </div>
+      
+      <!-- Tabla Responsive -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-300 min-w-[700px]">
+          <thead class="bg-gray-900/80 text-xs uppercase tracking-wider text-gray-400 border-b border-gray-800">
+            <tr>
+              <th scope="col" class="px-6 py-4">Nombre de la Campaña</th>
+              <th scope="col" class="px-6 py-4 text-center">Resultados (Chats)</th>
+              <th scope="col" class="px-6 py-4 text-center">Costo por Resultado</th>
+              <th scope="col" class="px-6 py-4 text-center">Importe Gastado</th>
+              <th scope="col" class="px-6 py-4 text-center">Impresiones</th>
+              <th scope="col" class="px-6 py-4 text-center">Alcance</th>
+              <th scope="col" class="px-6 py-4 text-center">Frecuencia</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-800/60">
+            <!-- Fila 1 -->
+            <tr class="hover:bg-gray-800/20 transition-colors duration-150">
+              <td class="px-6 py-4 font-bold text-white flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-accentPurple"></span>
+                <span>Campaña Carrusel #1</span>
+              </td>
+              <td class="px-6 py-4 text-center font-semibold">141</td>
+              <td class="px-6 py-4 text-center text-red-400 font-semibold">$1,062.99 <span class="text-[10px] text-gray-400">COP</span></td>
+              <td class="px-6 py-4 text-center">$149,881 <span class="text-[10px] text-gray-400">COP</span></td>
+              <td class="px-6 py-4 text-center text-gray-400">23,365</td>
+              <td class="px-6 py-4 text-center text-gray-400">14,624</td>
+              <td class="px-6 py-4 text-center text-gray-400 font-medium">1.60x</td>
+            </tr>
+            <!-- Fila 2 -->
+            <tr class="hover:bg-gray-800/20 transition-colors duration-150">
+              <td class="px-6 py-4 font-bold text-white flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                <span>Campaña Carrusel #2</span>
+              </td>
+              <td class="px-6 py-4 text-center font-semibold">124</td>
+              <td class="px-6 py-4 text-center text-yellow-400 font-semibold">$806.44 <span class="text-[10px] text-gray-400">COP</span></td>
+              <td class="px-6 py-4 text-center">$99,998 <span class="text-[10px] text-gray-400">COP</span></td>
+              <td class="px-6 py-4 text-center text-gray-400">16,652</td>
+              <td class="px-6 py-4 text-center text-gray-400">10,367</td>
+              <td class="px-6 py-4 text-center text-gray-400 font-medium">1.61x</td>
+            </tr>
+            <!-- Fila 3 -->
+            <tr class="hover:bg-gray-800/20 transition-colors duration-150 bg-brand-accentTeal/5">
+              <td class="px-6 py-4 font-bold text-white flex items-center space-x-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-accentTeal animate-pulse"></span>
+                <span class="flex items-center">
+                  Campaña #3 <span class="ml-2 text-[10px] px-2 py-0.5 bg-brand-accentTeal/20 text-brand-accentTeal rounded-full font-bold">Líder</span>
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center font-bold text-brand-accentTeal">135</td>
+              <td class="px-6 py-4 text-center text-emerald-400 font-extrabold">$740.19 <span class="text-[10px] text-gray-400">COP</span></td>
+              <td class="px-6 py-4 text-center font-medium">$99,926 <span class="text-[10px] text-gray-400">COP</span></td>
+              <td class="px-6 py-4 text-center text-gray-400">12,134</td>
+              <td class="px-6 py-4 text-center text-gray-400">7,443</td>
+              <td class="px-6 py-4 text-center text-gray-400 font-medium">1.63x</td>
+            </tr>
+            <!-- Fila Totales -->
+            <tr class="bg-gray-950 font-bold border-t border-gray-700 text-white">
+              <td class="px-6 py-4 text-left">TOTALES / PROMEDIO</td>
+              <td class="px-6 py-4 text-center text-brand-accentTeal font-extrabold">400</td>
+              <td class="px-6 py-4 text-center text-emerald-400 font-extrabold">$874.51 <span class="text-[10px] text-gray-400">COP</span></td>
+              <td class="px-6 py-4 text-center">$349,805 <span class="text-[10px] text-gray-400">COP</span></td>
+              <td class="px-6 py-4 text-center">52,151</td>
+              <td class="px-6 py-4 text-center">32,434</td>
+              <td class="px-6 py-4 text-center text-brand-accentPurple">1.61x</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Embudo de Conversión Visual -->
+    <section class="bg-brand-darkCard border border-gray-800 p-8 rounded-2xl shadow-xl">
+      <div class="mb-8 max-w-xl">
+        <h2 class="text-xl font-bold text-white">Embudo de Conversión Comercial</h2>
+        <p class="text-xs text-gray-400 mt-1">Cómo se filtraron las visitas hasta convertirse en conversaciones directas</p>
+      </div>
+
+      <div class="space-y-6 max-w-4xl mx-auto">
+        <!-- Paso 1: Impresiones -->
+        <div class="relative">
+          <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between relative z-10">
+            <div class="flex items-center space-x-4 mb-2 sm:mb-0">
+              <span class="w-8 h-8 rounded-lg bg-gray-800 flex items-center justify-center text-xs font-black text-gray-400">1</span>
+              <div>
+                <h4 class="text-sm font-bold text-white">Impresiones en Pantallas</h4>
+                <p class="text-xs text-gray-400">Número total de veces que se mostraron tus anuncios.</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="block text-lg font-extrabold text-white">52,151</span>
+              <span class="text-[10px] text-brand-accentTeal font-semibold uppercase tracking-wider">Volumen Inicial</span>
+            </div>
+          </div>
+          <div class="h-6 w-0.5 bg-gray-800 mx-auto"></div>
+        </div>
+
+        <!-- Paso 2: Alcance -->
+        <div class="relative">
+          <div class="bg-gray-900/80 border border-gray-800 p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between relative z-10">
+            <div class="flex items-center space-x-4 mb-2 sm:mb-0">
+              <span class="w-8 h-8 rounded-lg bg-brand-accentPurple/10 flex items-center justify-center text-xs font-black text-brand-accentPurple">2</span>
+              <div>
+                <h4 class="text-sm font-bold text-white">Alcance de Audiencia Única</h4>
+                <p class="text-xs text-gray-400">Personas únicas reales que vieron los anuncios al menos una vez.</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="block text-lg font-extrabold text-brand-accentPurple">32,434</span>
+              <span class="text-[10px] text-gray-400 font-semibold">Tasa de Exposición: 62.1%</span>
+            </div>
+          </div>
+          <div class="h-6 w-0.5 bg-gray-800 mx-auto"></div>
+        </div>
+
+        <!-- Paso 3: Conversión a WhatsApp -->
+        <div class="relative">
+          <div class="bg-gradient-to-r from-brand-accentTeal/10 to-transparent border border-brand-accentTeal/30 p-5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between relative z-10">
+            <div class="flex items-center space-x-4 mb-2 sm:mb-0">
+              <span class="w-8 h-8 rounded-lg bg-brand-accentTeal/20 flex items-center justify-center text-xs font-black text-brand-accentTeal">3</span>
+              <div>
+                <h4 class="text-sm font-bold text-white">Chats Iniciados en WhatsApp</h4>
+                <p class="text-xs text-gray-400">Usuarios que hicieron clic y abrieron una ventana de conversación.</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="block text-xl font-black text-brand-accentTeal">400 Chats</span>
+              <span class="text-[10px] text-emerald-400 font-extrabold">Conversión Final: 1.23%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Glosario de Métricas (Métrica por Métrica) -->
+    <section class="space-y-6">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Diccionario de Métricas para Somnus</h2>
+        <p class="text-sm text-gray-400 mt-2">¿No entiendes qué significa un indicador o por qué es importante? No te preocupes. Haz clic en las tarjetas interactivas de abajo para explorar la anatomía de tu reporte.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Métrica 1: Resultados -->
+        <div onclick="openMetricDetail('resultados')" class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl cursor-pointer hover:border-brand-accentTeal hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-2 h-full bg-brand-accentTeal"></div>
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="p-2 bg-brand-accentTeal/10 text-brand-accentTeal rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-1.923 2.502m4.974-1.217.157-.157a4.836 4.836 0 0 1 1.543-.918c1.373-.417 2.822-.172 3.924.581Z" />
+              </svg>
+            </span>
+            <h4 class="text-lg font-bold text-white group-hover:text-brand-accentTeal transition-colors">Resultados</h4>
+          </div>
+          <p class="text-sm text-gray-400 line-clamp-2">Es el objetivo principal de la campaña publicitaria. Representa la acción directa que el usuario ejecutó.</p>
+          <span class="inline-block text-xs font-semibold text-brand-accentTeal mt-4 group-hover:underline">Leer explicación minuciosa →</span>
+        </div>
+
+        <!-- Métrica 2: Costo por Resultado -->
+        <div onclick="openMetricDetail('costo')" class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl cursor-pointer hover:border-emerald-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-2 h-full bg-emerald-500"></div>
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </span>
+            <h4 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">Costo por Resultado</h4>
+          </div>
+          <p class="text-sm text-gray-400 line-clamp-2">Muestra la eficiencia del gasto publicitario. Es el costo promedio para conseguir cada cliente potencial.</p>
+          <span class="inline-block text-xs font-semibold text-emerald-400 mt-4 group-hover:underline">Leer explicación minuciosa →</span>
+        </div>
+
+        <!-- Métrica 3: Alcance -->
+        <div onclick="openMetricDetail('alcance')" class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl cursor-pointer hover:border-brand-accentPurple hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-2 h-full bg-brand-accentPurple"></div>
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="p-2 bg-brand-accentPurple/10 text-brand-accentPurple rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+              </svg>
+            </span>
+            <h4 class="text-lg font-bold text-white group-hover:text-brand-accentPurple transition-colors">Alcance</h4>
+          </div>
+          <p class="text-sm text-gray-400 line-clamp-2">Es el número de personas únicas que vieron tus anuncios por lo menos una vez en las redes sociales.</p>
+          <span class="inline-block text-xs font-semibold text-brand-accentPurple mt-4 group-hover:underline">Leer explicación minuciosa →</span>
+        </div>
+
+        <!-- Métrica 4: Impresiones -->
+        <div onclick="openMetricDetail('impresiones')" class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl cursor-pointer hover:border-blue-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-2 h-full bg-blue-500"></div>
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="p-2 bg-blue-500/10 text-blue-400 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+            </span>
+            <h4 class="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">Impresiones</h4>
+          </div>
+          <p class="text-sm text-gray-400 line-clamp-2">Número de veces que tus anuncios se desplegaron en pantalla. Una misma persona puede acumular varias impresiones.</p>
+          <span class="inline-block text-xs font-semibold text-blue-400 mt-4 group-hover:underline">Leer explicación minuciosa →</span>
+        </div>
+
+        <!-- Métrica 5: Frecuencia -->
+        <div onclick="openMetricDetail('frecuencia')" class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl cursor-pointer hover:border-yellow-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-2 h-full bg-yellow-500"></div>
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="p-2 bg-yellow-500/10 text-yellow-400 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>
+            </span>
+            <h4 class="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors">Frecuencia</h4>
+          </div>
+          <p class="text-sm text-gray-400 line-clamp-2">Es el promedio de veces que cada usuario vio tus anuncios publicitarios dentro de las plataformas.</p>
+          <span class="inline-block text-xs font-semibold text-yellow-400 mt-4 group-hover:underline">Leer explicación minuciosa →</span>
+        </div>
+
+        <!-- Métrica 6: Importe Gastado -->
+        <div onclick="openMetricDetail('gasto')" class="bg-brand-darkCard border border-gray-800 p-6 rounded-2xl cursor-pointer hover:border-indigo-500 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-2 h-full bg-indigo-500"></div>
+          <div class="flex items-center space-x-3 mb-3">
+            <span class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 7.756a4.5 4.5 0 1 0 0 8.488M7.5 10.5h5.25m-5.25 3h5.25M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </span>
+            <h4 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors">Importe Gastado</h4>
+          </div>
+          <p class="text-sm text-gray-400 line-clamp-2">Es la cantidad exacta de presupuesto publicitario que se ha consumido para realizar los impactos.</p>
+          <span class="inline-block text-xs font-semibold text-indigo-400 mt-4 group-hover:underline">Leer explicación minuciosa →</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Recomendaciones y Plan de Acción -->
+    <section class="bg-gradient-to-br from-brand-900/30 to-brand-darkCard border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+      <div class="absolute -bottom-16 -right-16 w-64 h-64 bg-brand-accentPurple/5 rounded-full blur-3xl"></div>
+      
+      <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 text-brand-accentTeal">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        Recomendaciones Clave para Somnus Studio
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gray-900/60 p-5 rounded-xl border border-gray-800">
+          <span class="text-xs font-extrabold text-brand-accentTeal uppercase tracking-wider block mb-2">Acción 1: Redistribución</span>
+          <h4 class="text-sm font-bold text-white mb-2">Traspaso de Presupuesto a Campaña #3</h4>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            La Campaña #3 demostró tener un rendimiento excepcional al conseguir chats por tan solo <strong>$740.19 COP</strong>. Sugerimos recortar un 25% del presupuesto de la Campaña Carrusel #1 (la de costo más elevado, de $1,062 COP por chat) e inyectarlo directamente en la Campaña #3 para potenciar los resultados.
+          </p>
+        </div>
+
+        <div class="bg-gray-900/60 p-5 rounded-xl border border-gray-800">
+          <span class="text-xs font-extrabold text-brand-accentPurple uppercase tracking-wider block mb-2">Acción 2: Formato Creativo</span>
+          <h4 class="text-sm font-bold text-white mb-2">Optimización de Formato de Anuncios</h4>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Las campañas en formato Carrusel (#1 y #2) mostraron costos de adquisición más altos. Esto indica que un formato de imagen única, video dinámico o portafolio condensado (como el utilizado en la Campaña #3) genera una mayor tasa de clics y facilita una acción directa más limpia por parte del usuario.
+          </p>
+        </div>
+
+        <div class="bg-gray-900/60 p-5 rounded-xl border border-gray-800">
+          <span class="text-xs font-extrabold text-emerald-400 uppercase tracking-wider block mb-2">Acción 3: Atención</span>
+          <h4 class="text-sm font-bold text-white mb-2">Optimizar la Tasa de Cierre</h4>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Con 400 clientes potenciales escribiendo directamente al canal de WhatsApp, el foco comercial debe centrarse en la velocidad y el proceso de atención. Una tasa de conversión de cierre del 10% representaría 40 nuevos proyectos concretados para el estudio.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-800 mt-20 py-8 text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p>© 2026 Somnus Studio • Todos los derechos reservados.</p>
+      <p class="mt-1">Diseñado especialmente con enfoque en optimización de rendimiento digital.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL DE EXPLICACIÓN DE MÉTRICAS (INTERACTIVO) -->
+  <div id="metric-modal" class="fixed inset-0 bg-brand-darkBg/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-all duration-300 p-4">
+    <!-- Contenido del modal -->
+    <div class="bg-brand-darkCard border border-gray-800 max-w-lg w-full rounded-2xl p-6 relative shadow-2xl overflow-y-auto max-h-[90vh] transition-transform duration-300 scale-95" id="modal-container">
+      
+      <!-- Botón Cerrar -->
+      <button onclick="closeMetricDetail()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Badge de categoría -->
+      <span id="modal-badge" class="text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">Métrica</span>
+
+      <!-- Título de la Métrica -->
+      <h3 id="modal-title" class="text-2xl font-extrabold text-white mt-4 mb-2">Cargando métrica...</h3>
+      
+      <!-- Descripción minuciosa -->
+      <div class="space-y-4 my-6 text-sm text-gray-300 leading-relaxed">
+        <div>
+          <h4 class="text-xs font-bold text-brand-accentTeal uppercase tracking-widest mb-1">¿Qué es esta métrica?</h4>
+          <p id="modal-definition" class="text-gray-300">Explicación técnica simplificada.</p>
+        </div>
+        
+        <div class="bg-gray-900/60 p-3.5 rounded-xl border border-gray-800">
+          <h4 class="text-xs font-bold text-brand-accentPurple uppercase tracking-widest mb-1">¿Qué representa para Somnus Studio?</h4>
+          <p id="modal-impact" class="text-xs text-gray-400">Cómo impacta al negocio de manera real.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div>
+            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Fórmula</h4>
+            <span id="modal-formula" class="text-xs font-semibold text-white block">A / B</span>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Tu Estado Actual</h4>
+            <span id="modal-status" class="text-xs font-extrabold text-white block">Valor actual</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de acción para cerrar o avanzar -->
+      <div class="pt-4 border-t border-gray-800 flex justify-end">
+        <button onclick="closeMetricDetail()" class="bg-brand-600 hover:bg-brand-700 text-xs text-white font-bold py-2.5 px-5 rounded-xl transition duration-200">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts para gráficos y modal -->
+  <script>
+    // Variables globales para la instancia de Chart.js
+    let currentChart = null;
+
+    // Datos crudos del informe para las visualizaciones
+    const campaigns = ["Carrusel #1", "Carrusel #2", "Campaña #3"];
+    const resultsData = [141, 124, 135];
+    const spendData = [149881, 99998, 99926];
+    const costsData = [1062.99, 806.44, 740.19];
+
+    // Inicialización al cargar la página
+    window.onload = function() {
+      renderChart('results');
+    };
+
+    // Función para renderizar el gráfico interactivo
+    function renderChart(type) {
+      const ctx = document.getElementById('performanceChart').getContext('2d');
+      
+      // Si ya existe un gráfico, destruirlo antes de crear el nuevo
+      if (currentChart) {
+        currentChart.destroy();
+      }
+
+      if (type === 'results') {
+        currentChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: campaigns,
+            datasets: [
+              {
+                label: 'Conversaciones Iniciadas (Chats)',
+                data: resultsData,
+                backgroundColor: 'rgba(6, 182, 212, 0.65)', // Accent Teal
+                borderColor: 'rgba(6, 182, 212, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                yAxisID: 'y'
+              },
+              {
+                label: 'Inversión Ejecutada (COP)',
+                data: spendData,
+                backgroundColor: 'rgba(168, 85, 247, 0.45)', // Accent Purple
+                borderColor: 'rgba(168, 85, 247, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+                yAxisID: 'y1'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: '#9ca3af',
+                  font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' }
+                }
+              },
+              tooltip: {
+                backgroundColor: '#161b26',
+                borderColor: '#1f2937',
+                borderWidth: 1,
+                titleColor: '#ffffff',
+                bodyColor: '#d1d5db'
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans' } }
+              },
+              y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { color: '#06b6d4', font: { family: 'Plus Jakarta Sans' } },
+                title: { display: true, text: 'Chats de WhatsApp', color: '#06b6d4' }
+              },
+              y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                grid: { drawOnChartArea: false },
+                ticks: { 
+                  color: '#a855f7', 
+                  font: { family: 'Plus Jakarta Sans' },
+                  callback: function(value) { return '$' + value.toLocaleString(); }
+                },
+                title: { display: true, text: 'Importe Gastado ($)', color: '#a855f7' }
+              }
+            }
+          }
+        });
+      } else if (type === 'cost') {
+        currentChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: campaigns,
+            datasets: [{
+              label: 'Costo por Chat Iniciado (COP)',
+              data: costsData,
+              fill: true,
+              backgroundColor: 'rgba(16, 185, 129, 0.1)', // Emerald
+              borderColor: 'rgba(16, 185, 129, 1)',
+              borderWidth: 3,
+              pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+              pointBorderColor: '#ffffff',
+              pointHoverRadius: 8,
+              tension: 0.35
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: '#9ca3af',
+                  font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' }
+                }
+              },
+              tooltip: {
+                backgroundColor: '#161b26',
+                borderColor: '#1f2937',
+                borderWidth: 1,
+                titleColor: '#ffffff',
+                bodyColor: '#d1d5db',
+                callbacks: {
+                  label: function(context) {
+                    return ' Costo: $' + context.raw.toLocaleString() + ' COP';
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans' } }
+              },
+              y: {
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { 
+                  color: '#10b981', 
+                  font: { family: 'Plus Jakarta Sans' },
+                  callback: function(value) { return '$' + value.toLocaleString(); }
+                },
+                title: { display: true, text: 'Costo por Chat en Pesos COP', color: '#10b981' }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // Cambiar dinámicamente el tipo de gráfico mediante botones
+    function switchChart(type) {
+      const btnResults = document.getElementById('btn-results');
+      const btnCost = document.getElementById('btn-cost');
+      
+      if (type === 'results') {
+        btnResults.className = "px-3 py-1.5 rounded-lg font-semibold text-white bg-brand-600 transition-all duration-200";
+        btnCost.className = "px-3 py-1.5 rounded-lg font-semibold text-gray-400 hover:text-white transition-all duration-200 ml-1";
+      } else {
+        btnResults.className = "px-3 py-1.5 rounded-lg font-semibold text-gray-400 hover:text-white transition-all duration-200";
+        btnCost.className = "px-3 py-1.5 rounded-lg font-semibold text-white bg-brand-600 transition-all duration-200 ml-1";
+      }
+      
+      renderChart(type);
+    }
+
+    // Datos detallados del glosario para el Modal Interactivo
+    const metricDatabase = {
+      resultados: {
+        title: "Resultados (Chats)",
+        badge: "Conversión Directa",
+        badgeStyle: "bg-brand-accentTeal/10 text-brand-accentTeal border border-brand-accentTeal/20",
+        definition: "Mide la cantidad de personas que hicieron clic en tu anuncio y completaron exitosamente la acción de abrir una ventana de chat directo con Somnus Studio en WhatsApp.",
+        impact: "Representa el volumen de 'leads calientes' u oportunidades de negocio. No son solo impresiones vagas de marca, sino personas reales que proactivamente abrieron conversación para cotizar o solicitar servicios de diseño y desarrollo web.",
+        formula: "Suma de todos los chats iniciados en el periodo de campaña.",
+        status: "400 clientes potenciales interactuando directamente en WhatsApp."
+      },
+      costo: {
+        title: "Costo por Resultado",
+        badge: "Eficiencia del Presupuesto",
+        badgeStyle: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
+        definition: "Calcula el costo promedio en el que incurre tu negocio para que un usuario inicie una conversación en WhatsApp a través de tus anuncios.",
+        impact: "Es la brújula financiera de tu marketing digital. Mientras más bajo sea este costo, más chats obtendrás con el mismo presupuesto. Un promedio de $874.51 COP por chat es sobresaliente, asegurando una entrada óptima de clientes.",
+        formula: "Importe Gastado Total / Resultados de Conversación totales.",
+        status: "$874.51 COP en promedio (Campaña #3 lidera con $740.19 COP)."
+      },
+      alcance: {
+        title: "Alcance",
+        badge: "Impacto y Cobertura",
+        badgeStyle: "bg-brand-accentPurple/10 text-brand-accentPurple border border-brand-accentPurple/20",
+        definition: "La cantidad de personas únicas a las que se les mostró tu anuncio por lo menos una vez. Es independiente de cuántas veces lo hayan visto.",
+        impact: "Nos dice qué tan amplia es la porción de mercado que Somnus Studio ha conquistado durante este ciclo de anuncios. Con 32,434 personas únicas alcanzadas, estás construyendo una alta penetración local de marca.",
+        formula: "Número neto de cuentas de usuario únicas impactadas por anuncios.",
+        status: "32,434 personas únicas expuestas a tus anuncios."
+      },
+      impresiones: {
+        title: "Impresiones",
+        badge: "Presencia en Pantalla",
+        badgeStyle: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+        definition: "Es el recuento bruto de cuántas veces se desplegaron tus anuncios en los feeds de Facebook o Instagram, incluyendo si un mismo usuario lo vio múltiples veces.",
+        impact: "Esta métrica determina el volumen de impacto publicitario que estás comprando a la red de Meta. Al contrastarlo con el Alcance, nos ayuda a entender la saturación o repetición de los anuncios.",
+        formula: "Suma total de veces que se sirvió visualmente el anuncio.",
+        status: "52,151 visualizaciones totales registradas."
+      },
+      frecuencia: {
+        title: "Frecuencia",
+        badge: "Impacto Promedio",
+        badgeStyle: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
+        definition: "Es el promedio de veces que cada persona única (Alcance) vio tus anuncios publicitarios en su feed o historias durante el periodo.",
+        impact: "Una frecuencia de 1.61x es ideal. Significa que tus anuncios se están memorizando en la mente del usuario sin llegar a aburrirlo o causar fatiga publicitaria (la cual ocurre cuando la frecuencia supera los 4x o 5x).",
+        formula: "Impresiones Totales / Alcance Único.",
+        status: "1.61x (Excelente rango de impacto de repetición equilibrada)."
+      },
+      gasto: {
+        title: "Importe Gastado",
+        badge: "Inversión Ejecutada",
+        badgeStyle: "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
+        definition: "Es la cantidad neta de dinero consumida por las plataformas de Meta Ads para comprar espacios publicitarios en base a tu configuración de puja diaria.",
+        impact: "Controla y transparenta el presupuesto real consumido. Permite analizar el Retorno de Inversión y planificar adecuadamente si es viable escalar el negocio invirtiendo más capital publicitario.",
+        formula: "Inversión acumulada de todas las subastas de publicidad activas.",
+        status: "$349,805 COP Invertidos en el periodo actual."
+      }
+    };
+
+    // Abrir Modal con datos de la métrica correspondiente
+    function openMetricDetail(metricKey) {
+      const metric = metricDatabase[metricKey];
+      if (!metric) return;
+
+      // Actualizar campos del modal
+      const modalBadge = document.getElementById('modal-badge');
+      const modalTitle = document.getElementById('modal-title');
+      const modalDefinition = document.getElementById('modal-definition');
+      const modalImpact = document.getElementById('modal-impact');
+      const modalFormula = document.getElementById('modal-formula');
+      const modalStatus = document.getElementById('modal-status');
+
+      modalBadge.innerText = metric.badge;
+      modalBadge.className = `text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full ${metric.badgeStyle}`;
+      modalTitle.innerText = metric.title;
+      modalDefinition.innerText = metric.definition;
+      modalImpact.innerText = metric.impact;
+      modalFormula.innerText = metric.formula;
+      modalStatus.innerText = metric.status;
+
+      // Desplegar Modal con transiciones suaves
+      const modal = document.getElementById('metric-modal');
+      const container = document.getElementById('modal-container');
+      
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        container.classList.remove('scale-95');
+        container.classList.add('scale-100');
+      }, 50);
+    }
+
+    // Cerrar el Modal
+    function closeMetricDetail() {
+      const modal = document.getElementById('metric-modal');
+      const container = document.getElementById('modal-container');
+      
+      modal.classList.add('opacity-0');
+      container.classList.remove('scale-100');
+      container.classList.add('scale-95');
+      
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+  </script>
+</body>
+</html>
